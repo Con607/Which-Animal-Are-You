@@ -2,18 +2,17 @@ package com.conexxionbusiness.whichanimalareyou;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +25,8 @@ public class StatementsActivity extends AppCompatActivity implements AdapterView
     private int mStatementCounter = 0;
     private Spinner mSpinner;
     private int mScore = 0;
+    private RelativeLayout mRelativeLayoutActivityStatements;
+    private ColorWheel mColorWheel = new ColorWheel();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +37,7 @@ public class StatementsActivity extends AppCompatActivity implements AdapterView
         mStatementView = (TextView) findViewById(R.id.statementView);
         mSubmitAnswer = (Button) findViewById(R.id.submitButton);
         mSpinner = (Spinner) findViewById(R.id.statementSpinner);
+        mRelativeLayoutActivityStatements = (RelativeLayout) findViewById(R.id.activity_statements);
 
         // Get statements
         mStatements = mStatementBank.loadStatements();
@@ -53,6 +55,13 @@ public class StatementsActivity extends AppCompatActivity implements AdapterView
             @Override
             public void onClick(View view) {
                 //sendToast("Selected: " + String.valueOf(mSpinner.getSelectedItem()));
+
+                // Set background color and button text color
+                int color = mColorWheel.getColor();
+                mRelativeLayoutActivityStatements.setBackgroundColor(color);
+                mSubmitAnswer.setTextColor(color);
+
+                // Get the score from selected option
                 mScore = 0;
                 String selected = String.valueOf(mSpinner.getSelectedItem());
                 for (int i = mOptions.size(); i > 0; i--) {
