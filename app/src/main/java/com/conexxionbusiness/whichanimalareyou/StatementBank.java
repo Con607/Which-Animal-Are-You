@@ -22,7 +22,12 @@ public class StatementBank {
             "Statement 7", "Animal 2",
             "Statement 8", "Animal 3",
             "Statement 9", "Animal 4",
-            "Statement 10", "Animal 5"
+            "Statement 10", "Animal 5",
+            "Statement 11", "Animal 1",
+            "Statement 12", "Animal 2",
+            "Statement 13", "Animal 3",
+            "Statement 14", "Animal 4",
+            "Statement 15", "Animal 5",
     };
 
     private String[] mOptions = {
@@ -41,7 +46,6 @@ public class StatementBank {
         }
         return statements;
     }
-
 
     public ArrayList<String> getOptions() {
         List<String> optionsList = new ArrayList<String>();
