@@ -6,6 +6,7 @@ package com.conexxionbusiness.whichanimalareyou;
 
 public class Animal {
     private String mName;
+    private int mScore;
 
     public Animal(String name) {
         this.mName = name;
@@ -19,5 +20,11 @@ public class Animal {
         this.mName = name;
     }
 
+    public int getScore() {
+        return mScore;
+    }
 
+    public void setScore(int score) {
+        mScore = score;
+    }
 }
