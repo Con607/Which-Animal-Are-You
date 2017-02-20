@@ -14,7 +14,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class StatementsActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     private StatementBank mStatementBank = new StatementBank();
@@ -27,6 +30,7 @@ public class StatementsActivity extends AppCompatActivity implements AdapterView
     private int mScore = 0;
     private RelativeLayout mRelativeLayoutActivityStatements;
     private ColorWheel mColorWheel = new ColorWheel();
+    private boolean mMoreThanOneAnimal = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,8 +68,8 @@ public class StatementsActivity extends AppCompatActivity implements AdapterView
                 // Get the score from selected option
                 mScore = 0;
                 String selected = String.valueOf(mSpinner.getSelectedItem());
-                for (int i = mOptions.size(); i > 0; i--) {
-                    if (selected == mOptions.get(i-1)) {
+                for (int i=0 ; i < mOptions.size(); i++) {
+                    if (selected == mOptions.get(i)) {
                         mScore = i+1;
                     }
                 }
@@ -75,7 +79,9 @@ public class StatementsActivity extends AppCompatActivity implements AdapterView
                 animal.setScore(animal.getScore() + mScore);
 
                 // Repeat process with next statement
-                mStatementCounter++;
+                if (mStatementCounter < mStatements.size()) {
+                    mStatementCounter++;
+                }
                 loadStatement();
                 loadSpinner();
             }
@@ -93,19 +99,36 @@ public class StatementsActivity extends AppCompatActivity implements AdapterView
             // Send the animal to the results intent
             Bundle bundle = new Bundle();
             bundle.putSerializable("animal", animal);
+            bundle.putBoolean("chupacabra", mMoreThanOneAnimal);
             intent.putExtras(bundle);
             startActivity(intent);
         }
     }
 
     private Animal evaluateScore() {
+        Map<String, Integer> scoreMap = new TreeMap<String, Integer>();
         // Select the animal with highest score
         Animal animalResult = mStatements.get(0).getAnimal();
         for (Statement statement : mStatements) {
-            if (statement.getAnimal().getScore() > animalResult.getScore()) {
+            // If the score is greater then
+            if (statement.getAnimal().getScore() >= animalResult.getScore()) {
                 animalResult = statement.getAnimal();
             }
         }
+        // Check if the animal with highest score is the only one with that score
+        for (Statement statement : mStatements) {
+            boolean sameName = statement.getAnimal().getName().equals(animalResult.getName());
+            // If the the score is equal and names are NOT the same THEN theres more than one animal with the highest score
+            if (statement.getAnimal().getScore() == animalResult.getScore() && !sameName) {
+                mMoreThanOneAnimal = true;
+            }
+        }
+        // Send score from animals in a toast just for debug purposes
+        String msg = "";
+        for (Statement statement : mStatements) {
+            msg = msg + statement.getAnimal().getName() + ", score = " + statement.getAnimal().getScore() + "\n";
+        }
+        sendToast(msg);
         return animalResult;
     }
 

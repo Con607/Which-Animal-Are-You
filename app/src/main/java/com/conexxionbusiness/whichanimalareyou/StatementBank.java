@@ -13,29 +13,29 @@ import java.util.Map;
 
 public class StatementBank {
     private String[] mStatementsArray = {
-            "Statement 1", "Animal 1",
-            "Statement 2", "Animal 2",
-            "Statement 3", "Animal 3",
-            "Statement 4", "Animal 4",
-            "Statement 5", "Animal 5",
-            "Statement 6", "Animal 1",
-            "Statement 7", "Animal 2",
-            "Statement 8", "Animal 3",
-            "Statement 9", "Animal 4",
-            "Statement 10", "Animal 5",
-            "Statement 11", "Animal 1",
-            "Statement 12", "Animal 2",
-            "Statement 13", "Animal 3",
-            "Statement 14", "Animal 4",
-            "Statement 15", "Animal 5",
+            "Statement 1", "Lion",
+            "Statement 2", "Penguin",
+            "Statement 3", "Wolf",
+            "Statement 4", "Kangaroo",
+            "Statement 5", "Bear",
+            "Statement 6", "Lion",
+            "Statement 7", "Penguin",
+            "Statement 8", "Wolf",
+            "Statement 9", "Kangaroo",
+            "Statement 10", "Bear"/*,
+            "Statement 11", "Lion",
+            "Statement 12", "Penguin",
+            "Statement 13", "Wolf",
+            "Statement 14", "Kangaroo",
+            "Statement 15", "Bear"*/
     };
 
     private String[] mOptions = {
-            "That's me!",
-            "Most likely me",
-            "Maybe",
+            "Not like me",
             "Unlikely me",
-            "Not like me"
+            "Maybe",
+            "Most likely me",
+            "That's me!"
     };
 
     public List<Statement> loadStatements() {
