@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -23,6 +25,7 @@ public class ResultsActivity extends AppCompatActivity {
     private boolean mChupacabra = false;
     private TextView mCaptionView;
     private EditText mEditCaptionView;
+    private Button mSaveButton;
     //private Button mExitButton;
 
     @Override
@@ -37,6 +40,10 @@ public class ResultsActivity extends AppCompatActivity {
         mResultsActivity = (RelativeLayout) findViewById(R.id.activity_results);
         mCaptionView = (TextView) findViewById(R.id.captionView);
         mEditCaptionView = (EditText) findViewById(R.id.editCaptionView);
+        mSaveButton = (Button) findViewById(R.id.saveButton);
+
+        // Set caption text to an empty string
+        mCaptionView.setText("");
 
         // Retrieve the animal result from statements activity
         mAnimal = (Animal) getIntent().getExtras().getSerializable("animal");
@@ -45,8 +52,10 @@ public class ResultsActivity extends AppCompatActivity {
         // Set animal name in text view
         if (mChupacabra) {
             mAnimalNameView.setText("Chupacabra");
+            sendToast("You are a Chupacabra.");
         } else {
             mAnimalNameView.setText(mAnimal.getName());
+            sendToast("You are a " + mAnimal.getName() + ".");
         }
 
         // Set background image
@@ -69,6 +78,22 @@ public class ResultsActivity extends AppCompatActivity {
                 //mEditCaptionView.setText(editable);
             }
         });
+
+        // Start Save Button listener
+        View.OnClickListener saveButton = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Hide keyboard
+                // Got it from one of the answers here http://stackoverflow.com/questions/3553779/android-dismiss-keyboard
+                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(mEditCaptionView.getWindowToken(), 0);
+                // Hide caption edit text
+                mEditCaptionView.setVisibility(View.INVISIBLE);
+                // Hide save button
+                mSaveButton.setVisibility(View.INVISIBLE);
+            }
+        };
+        mSaveButton.setOnClickListener(saveButton);
 
 
         // Start Try Again button listener
@@ -135,6 +160,13 @@ public class ResultsActivity extends AppCompatActivity {
         int duration = Toast.LENGTH_SHORT;
         Toast toast = Toast.makeText(context, message, duration);
         toast.show();
+    }
+
+    // Disable the back button functionality
+    // Got it from http://stackoverflow.com/questions/4779954/disable-back-button-in-android
+    @Override
+    public void onBackPressed() {
+        // I could also start a new activity here, like going back to mainactivity
     }
 
 }

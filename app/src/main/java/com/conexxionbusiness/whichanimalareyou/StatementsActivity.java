@@ -14,7 +14,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -39,7 +38,7 @@ public class StatementsActivity extends AppCompatActivity implements AdapterView
 
         // Get activity IDs
         mStatementView = (TextView) findViewById(R.id.statementView);
-        mSubmitAnswer = (Button) findViewById(R.id.submitButton);
+        mSubmitAnswer = (Button) findViewById(R.id.saveButton);
         mSpinner = (Spinner) findViewById(R.id.statementSpinner);
         mRelativeLayoutActivityStatements = (RelativeLayout) findViewById(R.id.activity_statements);
 
@@ -116,19 +115,24 @@ public class StatementsActivity extends AppCompatActivity implements AdapterView
             }
         }
         // Check if the animal with highest score is the only one with that score
+        int counter = 0;
         for (Statement statement : mStatements) {
             boolean sameName = statement.getAnimal().getName().equals(animalResult.getName());
             // If the the score is equal and names are NOT the same THEN theres more than one animal with the highest score
             if (statement.getAnimal().getScore() == animalResult.getScore() && !sameName) {
-                mMoreThanOneAnimal = true;
+                counter++;
+                // If 3 animals have the same high score then you are a chupacabra
+                if (counter == 2) {
+                    mMoreThanOneAnimal = true;
+                }
             }
         }
         // Send score from animals in a toast just for debug purposes
-        String msg = "";
+        /*String msg = "";
         for (Statement statement : mStatements) {
             msg = msg + statement.getAnimal().getName() + ", score = " + statement.getAnimal().getScore() + "\n";
         }
-        sendToast(msg);
+        sendToast(msg);*/
         return animalResult;
     }
 
@@ -163,6 +167,10 @@ public class StatementsActivity extends AppCompatActivity implements AdapterView
         int duration = Toast.LENGTH_SHORT;
         Toast toast = Toast.makeText(context, message, duration);
         toast.show();
+    }
+
+    @Override
+    public void onBackPressed() {
     }
 
 }
